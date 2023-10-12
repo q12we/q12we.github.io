@@ -1,0 +1,872 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="SpringMVC 的请求和响应SpringMVC的数据响应SpringMVC的数据响应方式1） 页面跳转  直接返回字符串  通过ModelAndView对象返回   2） 回写数据  直接返回字符串  返回对象或集合   页面跳转——返回字符串形式直接返回字符串：此种方式会将返回的字符串与视图解析器的前后缀拼接后跳转。 1234@RequestMapping(&quot;&#x2F;quick&amp;quot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【SSM】SpringMVC框架-请求和响应">
+<meta property="og:url" content="http://example.com/2023/10/12/%E3%80%90SSM%E3%80%91SpringMVC%E6%A1%86%E6%9E%B6-%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SpringMVC 的请求和响应SpringMVC的数据响应SpringMVC的数据响应方式1） 页面跳转  直接返回字符串  通过ModelAndView对象返回   2） 回写数据  直接返回字符串  返回对象或集合   页面跳转——返回字符串形式直接返回字符串：此种方式会将返回的字符串与视图解析器的前后缀拼接后跳转。 1234@RequestMapping(&quot;&#x2F;quick&amp;quot">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-10-12T10:24:00.000Z">
+<meta property="article:modified_time" content="2023-10-12T12:04:23.414Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>【SSM】SpringMVC框架-请求和响应 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Hi q12we</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【SSM】SpringMVC框架-请求和响应"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-12 18:24" pubdate>
+          October 12, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          117 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【SSM】SpringMVC框架-请求和响应</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="SpringMVC-的请求和响应"><a href="#SpringMVC-的请求和响应" class="headerlink" title="SpringMVC 的请求和响应"></a>SpringMVC 的请求和响应</h1><h2 id="SpringMVC的数据响应"><a href="#SpringMVC的数据响应" class="headerlink" title="SpringMVC的数据响应"></a><strong>SpringMVC的数据响应</strong></h2><h3 id="SpringMVC的数据响应方式"><a href="#SpringMVC的数据响应方式" class="headerlink" title="SpringMVC的数据响应方式"></a><strong>SpringMVC的数据响应方式</strong></h3><p>1） 页面跳转</p>
+<ul>
+<li><p>直接返回字符串</p>
+</li>
+<li><p>通过ModelAndView对象返回</p>
+</li>
+</ul>
+<p>2） 回写数据</p>
+<ul>
+<li><p>直接返回字符串</p>
+</li>
+<li><p>返回对象或集合</p>
+</li>
+</ul>
+<h4 id="页面跳转——返回字符串形式"><a href="#页面跳转——返回字符串形式" class="headerlink" title="页面跳转——返回字符串形式"></a>页面跳转<strong>——返回字符串形式</strong></h4><p>直接返回字符串：此种方式会将返回的字符串与视图解析器的前后缀拼接后跳转。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick&quot;</span>)<br><span class="hljs-keyword">public</span> <span class="hljs-title class_">String</span> <span class="hljs-title function_">quickMethod</span>(<span class="hljs-params"></span>)&#123; <br><span class="hljs-keyword">return</span> <span class="hljs-string">&quot;index&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;property <span class="hljs-attribute">name</span>=<span class="hljs-string">&quot;prefix&quot;</span> <span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;/WEB-INF/views/&quot;</span> /&gt;<br>&lt;property <span class="hljs-attribute">name</span>=“suffix” <span class="hljs-attribute">value</span>=<span class="hljs-string">&quot;.jsp&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+
+<p>转发资源地址：**&#x2F;WEB-INF&#x2F;views&#x2F;index.jsp**</p>
+<p>返回带有前缀的字符串：</p>
+<p>转发：<strong>forward:&#x2F;WEB-INF&#x2F;views&#x2F;index.jsp</strong></p>
+<p>重定向：<strong>redirect:&#x2F;index.jsp</strong></p>
+<h4 id="页面跳转——-返回ModelAndView对象"><a href="#页面跳转——-返回ModelAndView对象" class="headerlink" title="页面跳转—— 返回ModelAndView对象"></a><strong>页面跳转</strong>—— <strong>返回ModelAndView对象</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/quick2&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title function_">quickMethod2</span><span class="hljs-params">()</span>&#123;<br><span class="hljs-type">ModelAndView</span> <span class="hljs-variable">modelAndView</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelAndView</span>();<br>modelAndView.setViewName(<span class="hljs-string">&quot;redirect:index.jsp&quot;</span>);<br><span class="hljs-keyword">return</span> modelAndView;<br>&#125;<br><span class="hljs-meta">@RequestMapping(&quot;/quick3&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title function_">quickMethod3</span><span class="hljs-params">()</span>&#123;<br><span class="hljs-type">ModelAndView</span> <span class="hljs-variable">modelAndView</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelAndView</span>();<br>modelAndView.setViewName(<span class="hljs-string">&quot;forward:/WEB-INF/views/index.jsp&quot;</span>);<br><span class="hljs-keyword">return</span> modelAndView;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="页面跳转——向request域存储数据"><a href="#页面跳转——向request域存储数据" class="headerlink" title="页面跳转——向request域存储数据"></a><strong>页面跳转</strong>——<strong>向request域存储数据</strong></h4><p>在进行转发时，往往要向request域中存储数据，在jsp页面中显示，那么Controller中怎样向request</p>
+<p>域中存储数据呢？  </p>
+<p>① 通过SpringMVC框架注入的request对象setAttribute()方法设置</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick&quot;</span>)<br><span class="hljs-keyword">public</span> <span class="hljs-title class_">String</span> <span class="hljs-title function_">quickMethod</span>(<span class="hljs-params">HttpServletRequest request</span>)&#123;<br>    request.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;zhangsan&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;index&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>② 通过ModelAndView的addObject()方法设置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/quick3&quot;)</span><br><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title function_">quickMethod3</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-type">ModelAndView</span> <span class="hljs-variable">modelAndView</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ModelAndView</span>();<br>    modelAndView.setViewName(<span class="hljs-string">&quot;forward:/WEB-INF/views/index.jsp&quot;</span>);<br>    modelAndView.addObject(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;lisi&quot;</span>);<br>    <span class="hljs-keyword">return</span> modelAndView;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="回写数据——直接返回字符串"><a href="#回写数据——直接返回字符串" class="headerlink" title="回写数据——直接返回字符串****"></a><strong>回写数据——</strong>直接返回字符串****</h4><p>Web基础阶段，客户端访问服务器端，如果想直接回写字符串作为响应体返回的话，只需要使用</p>
+<p>response.getWriter().print(“hello world”) 即可，那么在Controller中想直接回写字符串该怎样呢？</p>
+<p>① 通过SpringMVC框架注入的response对象，使用response.getWriter().print(“hello world”) 回写数</p>
+<p>据，此时不需要视图跳转，业务方法返回值为void。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick4&quot;</span>)<br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quickMethod4</span><span class="hljs-params">(HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> </span><br><span class="hljs-function">IOException </span>&#123;<br>	response.getWriter().print(<span class="hljs-string">&quot;hello world&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>② 将需要回写的字符串直接返回，但此时需要通过**@ResponseBody**注解告知SpringMVC框架，方法</p>
+<p>返回的字符串不是跳转是直接在http响应体中返回。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick5&quot;</span>)<br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-function">String <span class="hljs-title">quickMethod5</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello springMVC!!!&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在异步项目中，客户端与服务器端往往要进行json格式字符串交互，此时我们可以手动拼接json字符串返回。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick6&quot;</span>)<br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">String</span> quickMethod6() <span class="hljs-keyword">throws</span> <span class="hljs-type">IOException</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&#123;<span class="hljs-subst">\&quot;</span>name<span class="hljs-subst">\&quot;</span>:<span class="hljs-subst">\&quot;</span>zhangsan<span class="hljs-subst">\&quot;</span>,<span class="hljs-subst">\&quot;</span>age<span class="hljs-subst">\&quot;</span>:18&#125;&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述方式手动拼接json格式字符串的方式很麻烦，开发中往往要将复杂的java对象转换成json格式的字符串，</p>
+<p>我们可以使用web阶段学习过的json转换工具jackson进行转换，导入jackson坐标。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--jackson--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-databind<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-annotations<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/quick7&quot;)</span><br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">quickMethod7</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();<br>user.setUsername(<span class="hljs-string">&quot;zhangsan&quot;</span>);<br>user.setAge(<span class="hljs-number">18</span>);<br><span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">objectMapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br><span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> objectMapper.writeValueAsString(user);<br><span class="hljs-keyword">return</span> s;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="回写数据——返回对象或集合"><a href="#回写数据——返回对象或集合" class="headerlink" title="回写数据——返回对象或集合"></a><strong>回写数据</strong>——<strong>返回对象或集合</strong></h4><p>通过SpringMVC帮助我们对对象或集合进行json字符串的转换并回写，为处理器适配器配置消息转换参数，</p>
+<p>指定使用jackson进行对象或集合的转换，因此需要在spring-mvc.xml中进行如下配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.web.servlet.mvc.method.annotation</span></span><br><span class="hljs-string"><span class="hljs-tag">.RequestMappingHandlerAdapter&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;messageConverters&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.http.converter.json</span></span><br><span class="hljs-string"><span class="hljs-tag">.MappingJackson2HttpMessageConverter&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">@RequestMapping(**&quot;/quick8&quot;**)<br><br>@ResponseBody<br><br>**<span class="hljs-built_in">public</span>** <span class="hljs-keyword">User</span> quickMethod8() **throws** IOException &#123;<br><br><span class="hljs-keyword">User</span> <span class="hljs-keyword">user</span> = **<span class="hljs-built_in">new</span>** <span class="hljs-keyword">User</span>();<br><br><span class="hljs-keyword">user</span>.setUsername(**&quot;zhangsan&quot;**);<br><br><span class="hljs-keyword">user</span>.setAge(<span class="hljs-number">18</span>);<br><br>**<span class="hljs-keyword">return</span>** <span class="hljs-keyword">user</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在方法上添加**@ResponseBody**就可以返回json格式的字符串，但是这样配置比较麻烦，配置的代码比较多，</p>
+<p>因此，我们可以使用mvc的注解驱动代替上述配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--mvc的注解驱动--&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">mvc:annotation-driven</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>在 SpringMVC 的各个组件中，<strong>处理器映射器</strong>、<strong>处理器适配器</strong>、<strong>视图解析器</strong>称为 SpringMVC 的三大组件。</p>
+<p>使用<a href="mvc:annotation-driven">mvc:annotation-driven</a>自动加载 RequestMappingHandlerMapping（处理映射器）和</p>
+<p>RequestMappingHandlerAdapter（ 处 理 适 配 器 ），可用在Spring-xml.xml配置文件中使用</p>
+<p><a href="mvc:annotation-driven">mvc:annotation-driven</a>替代注解处理器和适配器的配置。</p>
+<p>同时使用<a href="mvc:annotation-driven">mvc:annotation-driven</a>默认底层就会集成jackson进行对象或集合的json格式字符串的转换。</p>
+<h2 id="SpringMVC-获得请求数据"><a href="#SpringMVC-获得请求数据" class="headerlink" title="SpringMVC 获得请求数据"></a><strong>SpringMVC 获得请求数据</strong></h2><h3 id="获得请求参数"><a href="#获得请求参数" class="headerlink" title="获得请求参数"></a><strong>获得请求参数</strong></h3><p>客户端请求参数的格式是：<strong>name&#x3D;value&amp;name&#x3D;value… …</strong></p>
+<p>服务器端要获得请求的参数，有时还需要进行数据的封装，SpringMVC可以接收如下类型的参数：</p>
+<ul>
+<li><p>基本类型参数</p>
+</li>
+<li><p>POJO类型参数</p>
+</li>
+<li><p>数组类型参数</p>
+</li>
+<li><p>集合类型参数</p>
+</li>
+</ul>
+<h4 id="获得基本类型参数"><a href="#获得基本类型参数" class="headerlink" title="获得基本类型参数"></a><strong>获得基本类型参数</strong></h4><p>Controller中的业务方法的参数名称要与请求参数的name一致，参数值会自动映射匹配。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>localhost:<span class="hljs-number">8080</span><span class="hljs-regexp">/itheima_springmvc1/</span>quick9?username=zhangsan&amp;age=<span class="hljs-number">12</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick9&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod9</span>(String username,int age) throws IOException &#123;<br>    <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(username);<br>    <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(age);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获得POJO类型参数"><a href="#获得POJO类型参数" class="headerlink" title="获得POJO类型参数"></a><strong>获得POJO类型参数</strong></h4><p>Controller中的业务方法的POJO参数的属性名与请求参数的name一致，参数值会自动映射匹配。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>localhost:<span class="hljs-number">8080</span><span class="hljs-regexp">/itheima_springmvc1/</span>quick9?username=zhangsan&amp;age=<span class="hljs-number">12</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> </span>&#123;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> age;<br>    getter/setter…<br>&#125;<br><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">&quot;/quick10&quot;</span>)<br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quickMethod10</span><span class="hljs-params">(User user)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;<br>	System.out.println(user);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获得数组类型参数"><a href="#获得数组类型参数" class="headerlink" title="获得数组类型参数"></a><strong>获得数组类型参数</strong></h4><p>Controller中的业务方法数组名称与请求参数的name一致，参数值会自动映射匹配。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://localhost:<span class="hljs-number">8080</span>/itheima_springmvc1/quick11?strs=<span class="hljs-number">111</span>&amp;strs=<span class="hljs-number">222</span>&amp;strs=<span class="hljs-number">333</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick11&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod11</span>(String[] strs) throws IOException &#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(Arrays.<span class="hljs-built_in">asList</span>(strs));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获得集合类型参数"><a href="#获得集合类型参数" class="headerlink" title="获得集合类型参数"></a><strong>获得集合类型参数</strong></h4><p>获得集合参数时，要将集合参数包装到一个POJO中才可以。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stata">&lt;<span class="hljs-keyword">form</span> action=<span class="hljs-string">&quot;$&#123;pageContext.request.contextPath&#125;/quick12&quot;</span> method=<span class="hljs-string">&quot;post&quot;</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;userList[0].username&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;userList[0].age&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;userList[1].username&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;userList[1].age&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;提交&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>&lt;/<span class="hljs-keyword">form</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick12&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod12</span>(Vo vo) throws IOException &#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(vo.<span class="hljs-built_in">getUserList</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="获得集合类型参数-1"><a href="#获得集合类型参数-1" class="headerlink" title="获得集合类型参数"></a><strong>获得集合类型参数</strong></h4><p>当使用ajax提交时，可以指定contentType为json形式，那么在方法参数位置使用@RequestBody可以</p>
+<p>直接接收集合数据而无需使用POJO进行包装。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">&lt;script&gt;<br>    <span class="hljs-comment">//模拟数据</span><br>    <span class="hljs-keyword">var</span> userList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>();<br>    userList.<span class="hljs-title function_ invoke__">push</span>(&#123;<span class="hljs-attr">username</span>: <span class="hljs-string">&quot;zhangsan&quot;</span>,<span class="hljs-attr">age</span>: <span class="hljs-string">&quot;20&quot;</span>&#125;);<br>    userList.<span class="hljs-title function_ invoke__">push</span>(&#123;<span class="hljs-attr">username</span>: <span class="hljs-string">&quot;lisi&quot;</span>,<span class="hljs-attr">age</span>: <span class="hljs-string">&quot;20&quot;</span>&#125;);<br>    $.<span class="hljs-title function_ invoke__">ajax</span>(&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;POST&quot;</span>,<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;/itheima_springmvc1/quick13&quot;</span>,<br>    <span class="hljs-attr">data</span>: JSON.<span class="hljs-title function_ invoke__">stringify</span>(userList),<br>    contentType : <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span><br>    &#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick13&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod13</span>(<span class="hljs-variable">@RequestBody</span> List&lt;User&gt; userList) throws <br>IOException &#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(userList);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意：通过谷歌开发者工具抓包发现，没有加载到jquery文件，原因是SpringMVC的前端控制器</p>
+<p>DispatcherServlet的url-pattern配置的是&#x2F;,代表对所有的资源都进行过滤操作，我们可以通过以下两种</p>
+<p>方式指定放行静态资源：</p>
+<p>• 在spring-mvc.xml配置文件中指定放行的资源</p>
+<p>&lt;mvc:resources mapping&#x3D;”&#x2F;js&#x2F;**” location&#x3D;”&#x2F;js&#x2F;“&#x2F;&gt; </p>
+<p>• 使用<a href="mvc:default-servlet-handler/">mvc:default-servlet-handler/</a>标签</p>
+<h3 id="请求数据乱码问题"><a href="#请求数据乱码问题" class="headerlink" title="请求数据乱码问题"></a><strong>请求数据乱码问题</strong></h3><p>当post请求时，数据会出现乱码，我们可以设置一个过滤器来进行编码的过滤。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">filter</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>CharacterEncodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-class</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>encoding<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>UTF-8<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">filter-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">filter-name</span>&gt;</span>CharacterEncodingFilter<span class="hljs-tag">&lt;/<span class="hljs-name">filter-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/*<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">filter-mapping</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="参数绑定注解-requestParam"><a href="#参数绑定注解-requestParam" class="headerlink" title="参数绑定注解@requestParam"></a><strong>参数绑定注解@requestParam</strong></h3><p>当请求的参数名称与Controller的业务方法参数名称不一致时，就需要通过@RequestParam注解显示的绑定。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stata">&lt;<span class="hljs-keyword">form</span> action=<span class="hljs-string">&quot;$&#123;pageContext.request.contextPath&#125;/quick14&quot;</span> method=<span class="hljs-string">&quot;post&quot;</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;name&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;提交&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>&lt;/<span class="hljs-keyword">form</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick14&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod14</span>(<span class="hljs-variable">@RequestParam</span>(<span class="hljs-string">&quot;name&quot;</span>) String username) throws <br>IOException &#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(username);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注解@RequestParam还有如下参数可以使用：</p>
+<ul>
+<li><p><strong>value</strong>：与请求参数名称</p>
+</li>
+<li><p><strong>required</strong>：此在指定的请求参数是否必须包括，默认是true，提交时如果没有此参数则报错</p>
+</li>
+<li><p><strong>defaultValue</strong>：当没有指定请求参数时，则使用指定的默认值赋值</p>
+</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick14&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod14</span>(<span class="hljs-variable">@RequestParam</span>(value=<span class="hljs-string">&quot;name&quot;</span>,required = <br>false,defaultValue = <span class="hljs-string">&quot;itcast&quot;</span>) String username) throws IOException &#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(username);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="获得Restful风格的参数"><a href="#获得Restful风格的参数" class="headerlink" title="获得Restful风格的参数"></a><strong>获得Restful风格的参数</strong></h3><p><strong>Restful</strong>是一种软件<strong>架构风格</strong>、<strong>设计风格</strong>，而不是标准，只是提供了一组设计原则和约束条件。主要用于客户端和服务器交互类的软件，基于这个风格设计的软件可以更简洁，更有层次，更易于实现缓存机制等。</p>
+<p><strong>Restful</strong>风格的请求是使用<strong>“url+请求方式”</strong>表示一次请求目的的，HTTP 协议里面四个表示操作方式的动词如下：</p>
+<ul>
+<li><p>GET：用于获取资源</p>
+</li>
+<li><p>POST：用于新建资源</p>
+</li>
+<li><p>PUT：用于更新资源</p>
+</li>
+<li><p>DELETE：用于删除资源</p>
+</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li><p>&#x2F;user&#x2F;1 GET ： 得到 id &#x3D; 1 的 user</p>
+</li>
+<li><p>&#x2F;user&#x2F;1 DELETE： 删除 id &#x3D; 1 的 user</p>
+</li>
+<li><p>&#x2F;user&#x2F;1 PUT： 更新 id &#x3D; 1 的 user</p>
+</li>
+<li><p>&#x2F;user POST： 新增 user</p>
+</li>
+</ul>
+<p>上述url地址&#x2F;user&#x2F;1中的1就是要获得的请求参数，在SpringMVC中可以使用占位符进行参数绑定。地址&#x2F;user&#x2F;1可以写成&#x2F;user&#x2F;{id}，占位符{id}对应的就是1的值。在业务方法中我们可以使用@PathVariable注解进行占位符的匹配获取工作。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>localhost:<span class="hljs-number">8080</span><span class="hljs-regexp">/itheima_springmvc1/</span>quick19/zhangsan<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick19/&#123;name&#125;&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod19</span>(<span class="hljs-variable">@PathVariable</span>(value = <span class="hljs-string">&quot;name&quot;</span>,required = true) String name)&#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(name);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="自定义类型转换器"><a href="#自定义类型转换器" class="headerlink" title="自定义类型转换器"></a><strong>自定义类型转换器</strong></h3><ul>
+<li><p>SpringMVC 默认已经提供了一些常用的类型转换器，例如客户端提交的字符串转换成int型进行参数设置。</p>
+</li>
+<li><p>但是不是所有的数据类型都提供了转换器，没有提供的就需要自定义转换器，例如：日期类型的数据就需要自</p>
+</li>
+</ul>
+<p>定义转换器。</p>
+<p>自定义类型转换器的开发步骤：</p>
+<p>① 定义转换器类实现Converter接口</p>
+<p>② 在配置文件中声明转换器</p>
+<p>③ 在<annotation-driven>中引用转换器</p>
+<p>具体实现步骤：</p>
+<p>① 定义转换器类实现Converter接口</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DateConverter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Converter</span>&lt;<span class="hljs-title class_">String</span>,<span class="hljs-title class_">Date</span>&gt;&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">Date</span> <span class="hljs-title function_">convert</span>(<span class="hljs-params"><span class="hljs-built_in">String</span> source</span>) &#123;<br>        <span class="hljs-title class_">SimpleDateFormat</span> format = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleDateFormat</span>(<span class="hljs-string">&quot;yyyy-MM-dd&quot;</span>);<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-title class_">Date</span> date = format.<span class="hljs-title function_">parse</span>(source);<br>            <span class="hljs-keyword">return</span> date;<br>        &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-title class_">ParseException</span> e) &#123;<br>        	e.<span class="hljs-title function_">printStackTrace</span>();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>② 在配置文件中声明转换器</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;converterService&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.context.support.ConversionServiceFactoryBean&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;converters&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">list</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.itheima.converter.DateConverter&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">list</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>③ 在<annotation-driven>中引用转换器</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">&lt;mvc:annotation-driven <span class="hljs-keyword">conversion</span>-service=&quot;converterService&quot;/&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="获得Servlet相关API"><a href="#获得Servlet相关API" class="headerlink" title="获得Servlet相关API"></a><strong>获得Servlet相关API</strong></h3><p>SpringMVC支持使用原始ServletAPI对象作为控制器方法的参数进行注入，常用的对象如下：</p>
+<ul>
+<li><p>HttpServletRequest</p>
+</li>
+<li><p>HttpServletResponse</p>
+</li>
+<li><p>HttpSession</p>
+</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick16&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod16</span>(HttpServletRequest request,HttpServletResponse <br>response,<br>HttpSession session)&#123;<br>    <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(request);<br>    <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(response);<br>    <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(session);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="获得请求头"><a href="#获得请求头" class="headerlink" title="获得请求头"></a><strong>获得请求头</strong></h3><h4 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader"></a><strong>@RequestHeader</strong></h4><p>使用@RequestHeader可以获得请求头信息，相当于web阶段学习的request.getHeader(name)</p>
+<p>@RequestHeader注解的属性如下：</p>
+<ul>
+<li><p><strong>value</strong>：请求头的名称</p>
+</li>
+<li><p><strong>required</strong>：是否必须携带此请求头</p>
+</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick17&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod17</span>(<br><span class="hljs-variable">@RequestHeader</span>(value = <span class="hljs-string">&quot;User-Agent&quot;</span>,required = false) String <br>headerValue)&#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(headerValue);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue"></a><strong>@CookieValue</strong></h4><p>使用@CookieValue可以获得指定Cookie的值</p>
+<p>@CookieValue注解的属性如下：</p>
+<ul>
+<li><p><strong>value</strong>：指定cookie的名称</p>
+</li>
+<li><p><strong>required</strong>：是否必须携带此cookie</p>
+</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@RequestMapping</span>(<span class="hljs-string">&quot;/quick18&quot;</span>)<br><span class="hljs-variable">@ResponseBody</span><br>public void <span class="hljs-built_in">quickMethod18</span>(<br><span class="hljs-variable">@CookieValue</span>(value = <span class="hljs-string">&quot;JSESSIONID&quot;</span>,required = false) String jsessionid)&#123;<br>	<span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(jsessionid);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a><strong>文件上传</strong></h3><h4 id="文件上传客户端三要素"><a href="#文件上传客户端三要素" class="headerlink" title="文件上传客户端三要素"></a><strong>文件上传客户端三要素</strong></h4><ul>
+<li><p>表单项type&#x3D;“file”</p>
+</li>
+<li><p>表单的提交方式是post</p>
+</li>
+<li><p>表单的enctype属性是多部分表单形式，及enctype&#x3D;“multipart&#x2F;form-data”</p>
+</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stata">&lt;<span class="hljs-keyword">form</span> action=<span class="hljs-string">&quot;$&#123;pageContext.request.contextPath&#125;/quick20&quot;</span> method=<span class="hljs-string">&quot;post&quot;</span> <br>enctype=<span class="hljs-string">&quot;multipart/form-data&quot;</span>&gt;<br>    名称：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;name&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    文件：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;file&quot;</span> name=<span class="hljs-string">&quot;file&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;提交&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>&lt;/<span class="hljs-keyword">form</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="单文件上传步骤"><a href="#单文件上传步骤" class="headerlink" title="单文件上传步骤"></a><strong>单文件上传步骤</strong></h4><p>① 导入fileupload和io坐标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-fileupload<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-fileupload<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>② 配置文件上传解析器</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;multipartResolver&quot;</span> </span><br><span class="hljs-tag"><span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--上传文件总大小--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;maxUploadSize&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;5242800&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!--上传单个文件的大小--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;maxUploadSizePerFile&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;5242800&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!--上传文件的编码类型--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;defaultEncoding&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>③ 编写文件上传代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/quick20&quot;)</span><br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">quickMethod20</span><span class="hljs-params">(String name,MultipartFile uploadFile)</span> <span class="hljs-keyword">throws</span> <br>IOException &#123;<br>    <span class="hljs-comment">//获得文件名称</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">originalFilename</span> <span class="hljs-operator">=</span> uploadFile.getOriginalFilename();<br>    <span class="hljs-comment">//保存文件</span><br>    uploadFile.transferTo(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;C:\\upload\\&quot;</span>+originalFilename));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="多文件上传实现"><a href="#多文件上传实现" class="headerlink" title="多文件上传实现"></a><strong>多文件上传实现</strong></h4><p>多文件上传，只需要将页面修改为多个文件上传项，将方法参数MultipartFile类型修改为MultipartFile[]即可</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs stata">&lt;h1&gt;多文件上传测试&lt;/h1&gt;<br>&lt;<span class="hljs-keyword">form</span> action=<span class="hljs-string">&quot;$&#123;pageContext.request.contextPath&#125;/quick21&quot;</span> method=<span class="hljs-string">&quot;post&quot;</span> <br>enctype=<span class="hljs-string">&quot;multipart/form-data&quot;</span>&gt;<br>    名称：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;name&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    文件1：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;file&quot;</span> name=<span class="hljs-string">&quot;uploadFiles&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    文件2：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;file&quot;</span> name=<span class="hljs-string">&quot;uploadFiles&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    文件3：&lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;file&quot;</span> name=<span class="hljs-string">&quot;uploadFiles&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>    &lt;<span class="hljs-keyword">input</span> <span class="hljs-keyword">type</span>=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;提交&quot;</span>&gt;&lt;<span class="hljs-keyword">br</span>&gt;<br>&lt;/<span class="hljs-keyword">form</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequestMapping(&quot;/quick21&quot;)</span><br><span class="hljs-meta">@ResponseBody</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">quickMethod21</span><span class="hljs-params">(String name,MultipartFile[] uploadFiles)</span> <span class="hljs-keyword">throws</span> <br>IOException &#123;<br>    <span class="hljs-keyword">for</span> (MultipartFile uploadFile : uploadFiles)&#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">originalFilename</span> <span class="hljs-operator">=</span> uploadFile.getOriginalFilename();<br>        uploadFile.transferTo(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;C:\\upload\\&quot;</span>+originalFilename));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="知识要点"><a href="#知识要点" class="headerlink" title="知识要点"></a><strong>知识要点</strong></h3><p><strong>MVC实现数据请求方式</strong></p>
+<ul>
+<li><p>基本类型参数</p>
+</li>
+<li><p>POJO类型参数</p>
+</li>
+<li><p>数组类型参数</p>
+</li>
+<li><p>集合类型参数</p>
+</li>
+</ul>
+<p><strong>MVC获取数据细节</strong></p>
+<ul>
+<li><p>中文乱码问题</p>
+</li>
+<li><p>@RequestParam 和 @PathVariable</p>
+</li>
+<li><p>自定义类型转换器</p>
+</li>
+<li><p>获得Servlet相关API</p>
+</li>
+<li><p>@RequestHeader 和 @CookieValue</p>
+</li>
+<li><p>文件上传</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【SSM】SpringMVC框架-请求和响应</div>
+      <div>http://example.com/2023/10/12/【SSM】SpringMVC框架-请求和响应/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 12, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/07/%E3%80%90SSM%E3%80%91SpringMVC%E6%A1%86%E6%9E%B6-%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90/" title="【SSM】SpringMVC框架-组件解析">
+                        <span class="hidden-mobile">【SSM】SpringMVC框架-组件解析</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
